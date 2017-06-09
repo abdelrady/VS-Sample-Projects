@@ -1,0 +1,13 @@
+﻿@model WebApplication1.Models.MyClass
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    @using (Html.BeginForm("Index","Home"))
+    {
+        @Html.TextBoxFor(x => x.Number)
+        <input type="submit" value="Submit"/>
+    }
+
+</div>

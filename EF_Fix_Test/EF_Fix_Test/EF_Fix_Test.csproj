@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8435F2F3-E201-4B0B-8400-9D54C3DE1F7C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EF_Fix_Test</RootNamespace>
+    <AssemblyName>EF_Fix_Test</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">C:\Users\Administrator\Downloads\Entityframework6-DbModelStore\Entityframework6-DbModelStore\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentMigrator, Version=1.6.1.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
+      <HintPath>C:\Users\Administrator\Downloads\Entityframework6-DbModelStore\Entityframework6-DbModelStore\packages\FluentMigrator.1.6.1\lib\40\FluentMigrator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentMigrator.MSBuild">
+      <HintPath>C:\Users\Administrator\Downloads\Entityframework6-DbModelStore\Entityframework6-DbModelStore\packages\FluentMigrator.1.6.1\tools\FluentMigrator.MSBuild.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentMigrator.Runner">
+      <HintPath>C:\Users\Administrator\Downloads\Entityframework6-DbModelStore\Entityframework6-DbModelStore\packages\FluentMigrator.1.6.1\tools\FluentMigrator.Runner.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentMigrator.SchemaDump">
+      <HintPath>C:\Users\Administrator\Downloads\fluentmigrator-master\fluentmigrator-master\src\FluentMigrator.SchemaDump\bin\Debug\FluentMigrator.SchemaDump.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="RCDumpWriter.cs" />
+    <Compile Include="MigrationConfiguration.cs" />
+    <Compile Include="MzCentralDbMigrations\LdapAndOAuth.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\Administrator\Downloads\Entityframework6-DbModelStore\Entityframework6-DbModelStore\DAL\DAL.csproj">
+      <Project>{6e1cb1ed-253b-4038-99ab-3433b1eee473}</Project>
+      <Name>DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Administrator\Downloads\Entityframework6-DbModelStore\Entityframework6-DbModelStore\InteractivePreGeneratedViews\InteractivePreGeneratedViews.csproj">
+      <Project>{af712bbc-72cd-45aa-8452-e0cde1cf2ca0}</Project>
+      <Name>InteractivePreGeneratedViews</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Administrator\Downloads\Entityframework6-DbModelStore\Entityframework6-DbModelStore\src\EntityFramework.SqlServer\EntityFramework.SqlServer.csproj">
+      <Project>{6f4bb80b-5f74-44d3-a77f-0025dfa48c1a}</Project>
+      <Name>EntityFramework.SqlServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Administrator\Downloads\Entityframework6-DbModelStore\Entityframework6-DbModelStore\src\EntityFramework\EntityFramework.csproj">
+      <Project>{e06d1c12-efe8-4413-a15c-ae01fc158f2f}</Project>
+      <Name>EntityFramework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TextFile1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

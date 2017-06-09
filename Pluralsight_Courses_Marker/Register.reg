@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\Directory\shell\Mark As Done]
+@="Mark As Done"
+
+[HKEY_CLASSES_ROOT\Directory\shell\Mark As Done\command]
+@="D:\\VS_Projects\\Pluralsight_Courses_Marker\\Pluralsight_Courses_Marker\\bin\\Debug\\Pluralsight_Courses_Marker.exe \"%L\""

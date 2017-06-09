@@ -1,0 +1,255 @@
+﻿<html>
+
+<head>
+    <style type="text/css">
+        h1 {
+            text-align: center;
+            color: red;
+        }
+
+        .container {
+            text-align: center;
+            margin: auto auto;
+        }
+
+        #board {
+            margin: auto auto;
+        }
+
+        .piece {
+            margin-right: 10px;
+            color: black;
+        }
+
+        .jumbotron {
+            margin: auto auto;
+            height: 302px;
+            width: 302px;
+        }
+
+
+        .square {
+            height: 100px;
+            width: 100px;
+            border: 1px solid black;
+            float: left;
+            font-size: 30px;
+        }
+
+        #message {
+            border: 1px solid black;
+            margin-top: 25px;
+            margin-left: 300px;
+            width: 300px;
+            height: 30px;
+        }
+
+        #reset {
+            font-size: 25px;
+            margin: auto auto;
+        }
+
+        td:hover {
+            cursor: pointer;
+        }
+
+        .pieces {
+            color: black;
+            font-size: 40px;
+        }
+
+        #choose {
+            font-size: 20px;
+            width: 160px;
+        }
+    </style>
+</head>
+<h1>
+    FreeCodeCamp Tic Tac Toe
+</h1>
+<br>
+<br>
+<br>
+<div class="container" id="choose">
+    <p>Choose Player</p>
+    <button class="piece" id="X">X</button>
+    <button class="piece" id="O">O</button>
+</div>
+<br>
+<br>
+<div class="container">
+    <table id="board">
+        <tr>
+            <td class=square id="0" data-index="0"></td>
+            <td class=square id="1" data-index="1"></td>
+            <td class=square id="2" data-index="2"></td>
+        </tr>
+        <tr>
+            <td class=square id="3" data-index="3"></td>
+            <td class=square id="4" data-index="4"></td>
+            <td class=square id="5" data-index="5"></td>
+        </tr>
+        <tr>
+            <td class=square id="6" data-index="6"></td>
+            <td class=square id="7" data-index="7"></td>
+            <td class=square id="8" data-index="8"></td>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <button id="reset">Reset</button>
+</div>
+<script type="text/javascript" language="Javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gameBoard = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+            humanPlayer = 'X',
+            EMPTY = ' ',
+            computerPlayer = 'O',
+            currentPlayer = 'computer',
+            choice;
+
+        function buildBoard(board) {
+            $('td').each(function (index) {
+                $(this).text(board[index]);
+            });
+        }
+
+        function makeMove(board, symbol, move) {
+            board[move] = symbol;
+        }
+
+        function checkWin(board, player) {
+            return ((board[0] == player && board[1] == player && board[2] == player) || (board[3] == player && board[4] == player && board[5] == player) || (board[6] == player && board[7] == player && board[8] == player) || (board[0] == player && board[3] == player && board[6] == player) || (board[1] == player && board[4] == player && board[7] == player) || (board[0] == player && board[4] == player && board[8] == player) || (board[2] == player && board[4] == player && board[6] == player) || (board[2] == player && board[5] == player && board[8] == player));
+        }
+
+        function boardSpaceOpen(board, move) {
+            return board[move] == EMPTY;
+        }
+
+        function boardIsFull(board) {
+            for (var i = 0; i < board.length; i++) {
+                if (boardSpaceOpen(board, i)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function resetBoard() {
+            gameBoard = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+            buildBoard(gameBoard);
+            currentPlayer = 'computer';
+            computerPlay();
+        }
+
+
+        function computerPlay() {
+            var moves = getOpenSpaces(gameBoard);
+            var move = moves[0];
+            var score = -10000;
+            for (var i = 0; i < moves.length; i++) {
+                debugger;
+                var newBoard = gameBoard.slice();
+                newBoard[moves[i]] = computerPlayer;
+
+                if (checkWin(computerPlayer, newBoard)) {
+                    move = moves[i];
+                    break;
+                }
+                var newScore = minimax(humanPlayer, newBoard);
+                if (newScore > score) {
+                    score = newScore;
+                    move = moves[i];
+                }
+            }
+            makeMove(gameBoard, computerPlayer, move);
+            buildBoard(gameBoard);
+
+            if (checkWin(gameBoard, computerPlayer)) {
+                alert('computer Wins!!');
+                resetBoard();
+            } else if (boardIsFull(gameBoard)) {
+                alert('DRAW!!');
+                resetBoard();
+            } else {
+                currentPlayer = 'human';
+            }
+        }
+
+        function getOpenSpaces(board) {
+            var emptySpaces = [];
+            for (var i = 0; i < board.length; i++) {
+                if (boardSpaceOpen(board, i)) {
+                    emptySpaces.push(i);
+                }
+            }
+            return emptySpaces;
+        }
+
+        function getOpponentOf(player) {
+            return currentPlayer == 'computer' ? 'human' : 'computer';
+        }
+
+        function minimax(player, board) {//changed the order or the params here !
+            debugger;
+            if (checkWin(board, humanPlayer)) {
+                return -100
+            }
+            if (checkWin(board, computerPlayer)) {
+                return 100
+            }
+            if (boardIsFull(board)) {
+                return 0;
+            }
+
+            var availableMoves = getOpenSpaces(board);
+            var scores = availableMoves.map(function (move) {
+                var newBoard = board.slice();
+                newBoard[move] = player;
+                return minimax(getOpponentOf(currentPlayer), newBoard);
+            });
+
+            if (currentPlayer == 'computer') {
+                return Math.max.apply(null, scores);
+            } else {
+                return Math.min.apply(null, scores)
+            }
+        }
+
+
+        $('#reset').on('click', function () {
+            resetBoard();
+        });
+
+        $('.piece').on('click', function () {
+            humanPlayer = this.id;
+            computerPlayer = humanPlayer == 'X' ? 'O' : 'X';
+            computerPlay();
+        });
+
+        $('td').on('click', function () {
+            if (currentPlayer == 'human') {
+                var move = this.id;
+                if (boardSpaceOpen(gameBoard, move)) {
+                    makeMove(gameBoard, humanPlayer, move);
+                    buildBoard(gameBoard);
+
+                    if (checkWin(gameBoard, humanPlayer)) {
+                        alert('You Won!!');
+                        resetBoard();
+                    } else if (boardIsFull(gameBoard)) {
+                        alert('DRAW!!');
+                        resetBoard();
+                    } else {
+                        currentPlayer = 'computer';
+                        computerPlay();
+                    }
+                }
+            }
+        });
+
+    });
+</script>
+
+</html>
